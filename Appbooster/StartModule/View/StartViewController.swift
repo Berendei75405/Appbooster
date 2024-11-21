@@ -7,11 +7,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class StartViewController: UIViewController {
+    
+    var viewModel: StartViewModelProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .red
     }
 
 
