@@ -9,5 +9,11 @@ import Foundation
 
 //Для состояния таблицы
 enum TableState {
-    case success, failure(Error), initial
+    case success, failure(NetworkError), initial
+}
+
+//MARK: - NetworkError
+enum NetworkError: Error {
+    case errorWithDescription(String)
+    case error(Error)
 }
