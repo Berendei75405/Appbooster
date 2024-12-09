@@ -20,7 +20,7 @@ struct User: Codable {
     }
 }
 
-// MARK: - FileInfo
+//MARK: - FileInfo
 struct FileInfo: Codable {
     let fileName: String
     let rawURL: URL
@@ -32,3 +32,16 @@ struct FileInfo: Codable {
 }
 
 typealias FilesDict = [String: FileInfo]
+
+//MARK: - UserInfo
+struct UserInfo {
+    let files: File
+    let createdAt, updatedAt: String
+    let description: String
+    
+    struct File {
+        let fileName: String
+        let rawURL: URL
+        let gist: String
+    }
+}
