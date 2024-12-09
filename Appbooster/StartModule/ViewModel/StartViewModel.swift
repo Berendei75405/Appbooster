@@ -10,17 +10,20 @@ import Foundation
 
 protocol StartViewModelProtocol: AnyObject {
     var updateTableState: PassthroughSubject<TableState, Never> {get set}
-    var user: [User]? {get set}
+    var coordinator: CoordinatorProtocol! {get set}
+    var userInfo: [UserInfo] {get set}
     var userName: String {get set}
-    var gistArray: [String] {get set}
     func fetchGist()
 }
 
 final class StartViewModel: StartViewModelProtocol {
     private let networkManager = NetworkManager.shared
     
+    var coordinator: CoordinatorProtocol!
+    
     var updateTableState = PassthroughSubject<TableState, Never>()
-    var user: [User]?
+    var userInfo: [UserInfo] = []
+    var user: [User] = []
     var gistArray: [String] = []
     var userName: String = ""
     
@@ -34,7 +37,6 @@ final class StartViewModel: StartViewModelProtocol {
                         self?.fetchTextGist(url: fileInfo.rawURL)
                     }
                 }
-                self?.updateTableState.send(.success)
                 self?.user = user
             case .failure(let error):
                 self?.updateTableState.send(.failure(error))
@@ -48,10 +50,35 @@ final class StartViewModel: StartViewModelProtocol {
             switch result {
             case .success(let string):
                 self?.gistArray.append(string)
+                if self?.gistArray.count == self?.user.count {
+                    self?.createUserInfo()
+                }
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    //MARK: - createUserInfo
+    ///Эта функция предназначена для того чтобы из модели user, получить более удобную модель данных для нашего использования
+    ///
+    private func createUserInfo()  {
+        for index in 0..<user.count {
+            let user = user[index]
+            for (_, fileInfo) in user.files {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm:ss dd.MM.yyyy"
+
+                let userInfo = UserInfo(files: .init(fileName: fileInfo.fileName,
+                                                     rawURL: fileInfo.rawURL,
+                                                     gist: gistArray[index]),
+                                        createdAt: formatter.string(from: user.createdAt),
+                                        updatedAt: formatter.string(from: user.updatedAt),
+                                        description: user.description)
+                self.userInfo.append(userInfo)
+            }
+        }
+        self.updateTableState.send(.success)
     }
     
 }

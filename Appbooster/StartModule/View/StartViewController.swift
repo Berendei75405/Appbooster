@@ -32,7 +32,7 @@ final class StartViewController: UIViewController {
                         self.centerYConstraint.constant = self.view.frame.height * 2
                         self.view.layoutIfNeeded()
                     })
-                    
+                    self.viewModel?.coordinator.showGistVC(userInfo: viewModel?.userInfo ?? [])
                 case .failure(let error):
                     activityView.isHidden = true
                     UIView.animate(withDuration: 0.8,
@@ -104,6 +104,7 @@ final class StartViewController: UIViewController {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.backgroundColor = .white
         stack.layer.cornerRadius = 10
+        stack.insetsLayoutMarginsFromSafeArea = false
         stack.isLayoutMarginsRelativeArrangement = true
         stack.layoutMargins = .init(top: .zero, left: 8, bottom: .zero, right: 8)
         stack.addGestureRecognizer(tapGesture)
@@ -138,12 +139,16 @@ final class StartViewController: UIViewController {
         //nameTextField constraints
         view.addSubview(nameTextField)
         NSLayoutConstraint.activate([
-            nameTextField.centerXAnchor.constraint(
-                equalTo: view.centerXAnchor),
+//            nameTextField.centerXAnchor.constraint(
+//                equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             nameTextField.centerYAnchor.constraint(
-                equalTo: view.centerYAnchor, constant: -64),
-            nameTextField.widthAnchor.constraint(
-                equalToConstant: view.frame.width - 64)
+                equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -64),
+            nameTextField.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 32),
+            nameTextField.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -32)
         ])
         
         //stackView constraints
@@ -152,12 +157,14 @@ final class StartViewController: UIViewController {
             stackView.centerYAnchor.constraint(
                 equalTo: nameTextField.centerYAnchor,
                 constant: 62),
-            stackView.centerXAnchor.constraint(
-                equalTo: view.centerXAnchor),
-            stackView.widthAnchor.constraint(
-                equalToConstant: 100),
             stackView.heightAnchor.constraint(
-                equalToConstant: 32)
+                equalToConstant: 32),
+            stackView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 128),
+            stackView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -128)
         ])
         
         //errorView
@@ -165,11 +172,13 @@ final class StartViewController: UIViewController {
         centerYConstraint = errorView.centerYAnchor.constraint(
             equalTo: view.centerYAnchor, constant: view.frame.height * 2)
         NSLayoutConstraint.activate([
-            errorView.centerXAnchor.constraint(
-                equalTo: view.centerXAnchor),
             centerYConstraint,
-            errorView.widthAnchor.constraint(
-                equalToConstant: view.frame.width - 64),
+            errorView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 32),
+            errorView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -32),
             errorView.heightAnchor.constraint(
                 equalToConstant: view.frame.height / 2)
         ])
