@@ -32,7 +32,8 @@ final class StartViewController: UIViewController {
                         self.centerYConstraint.constant = self.view.frame.height * 2
                         self.view.layoutIfNeeded()
                     })
-                    self.viewModel?.coordinator.showGistVC(userInfo: viewModel?.userInfo ?? [])
+                    self.viewModel?.coordinator.showGistVC(
+                        user: viewModel?.gistInfo ?? [], userName: viewModel?.userName ?? "Пользователь")
                 case .failure(let error):
                     activityView.isHidden = true
                     UIView.animate(withDuration: 0.8,

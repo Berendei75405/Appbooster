@@ -54,9 +54,8 @@ final class NetworkService {
         
         //отправляем запрос
         task.resume()
-            
-        }
-//    }
+        
+    }
     
     //MARK: - makeRequestString
     func makeRequestString(request: URLRequest,
@@ -91,5 +90,32 @@ final class NetworkService {
         
         //отправляем запрос
         task.resume()
+    }
+    
+    //MARK: - makeRequestArrayData
+    func makeRequestArrayData<T>(request: [URLRequest], completion: @escaping (Result<[T], Error>) -> Void) {
+        let group = DispatchGroup()
+        var dataArray = [Data?](repeating: nil, count: request.count)
+        // Перебираем массив URL-адресов и выполняем запросы асинхронно
+        for (index, urlRequest) in request.enumerated() {
+            group.enter() // Вступаем в группу операций перед каждым запросом
+            
+            DispatchQueue.global(qos: .userInteractive).async {
+                URLSession.shared.dataTask(with: urlRequest) { (data,
+                                                                response,
+                                                                error) in
+                    // Обработка полученного ответа
+                    dataArray[index] = data
+                    
+                    if dataArray[dataArray.count - 1] != nil {
+                        DispatchQueue.main.async {
+                            completion(.success(dataArray as? [T] ?? []))
+                        }
+                    }
+                    group.leave() // Выходим из группы операций после обработки ответа
+                }.resume()
+            }
+            group.wait()
+        }
     }
 }

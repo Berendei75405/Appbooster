@@ -11,7 +11,8 @@ import UIKit
 protocol CoordinatorProtocol: AnyObject {
     func createStartVC() -> UIViewController
     func initialStartVC()
-    func showGistVC(userInfo: [UserInfo])
+    func showGistVC(user: [GistInfo], userName: String)
+    func popToBack()
 }
 
 final class Coordinator: CoordinatorProtocol {
@@ -42,10 +43,12 @@ final class Coordinator: CoordinatorProtocol {
     }
     
     //MARK: - showGistVC
-    func showGistVC(userInfo: [UserInfo]) {
+    func showGistVC(user: [GistInfo],
+                    userName: String) {
         if let navController = navController {
             guard let view = createGistVC() as? GistViewController else { return }
-            view.viewModel?.userInfo = userInfo
+            view.viewModel?.gistInfo = user
+            view.viewModel?.userName = userName
             
             navController.pushViewController(view, animated: true)
         }
@@ -60,6 +63,13 @@ final class Coordinator: CoordinatorProtocol {
         viewModel.coordinator = self
         
         return view
+    }
+    
+    //MARK: - popToBack
+    func popToBack() {
+        if let navCon = navController {
+            navCon.popViewController(animated: true)
+        }
     }
     
 }

@@ -15,8 +15,11 @@ final class NetworkManager {
     
     //MARK: - fetchUser
     func fetchUser(userName: String,
-                   completion: @escaping (Result<[User], NetworkError>) -> Void) {
-        guard let url = URL(string: "https://api.github.com/users/Berendei75405/gists") else { return }
+                   pageNumber: Int,
+                   perPage: Int,
+                   completion: @escaping (Result<[Gist], NetworkError>) -> Void) {
+        //url с пагинацией
+        guard let url = URL(string: "https://api.github.com/users/Berendei75405/gists?page=\(pageNumber)&per_page=\(perPage)") else { return completion(.failure(.errorWithDescription("Такого пользователя нет!"))) }
         
         var request = URLRequest(url: url,
                                  cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60.0)
@@ -26,11 +29,15 @@ final class NetworkManager {
     }
     
     //MARK: - fetch
-    func fetchTextGist(url: URL, completion: @escaping (Result<String, NetworkError>) -> Void) {
-        var request = URLRequest(url: url,
-                                 cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60.0)
-        request.httpMethod = "GET"
-        
-        networkService.makeRequestString(request: request, completion: completion)
-    }
+//    func fetchTextGist(url: [URL], completion: @escaping (Result<[String], Error>) -> Void) {
+//        var arrayRequest: [URLRequest] = []
+//        for item in url {
+//            var requset = URLRequest(url: item)
+//            requset.httpMethod = "GET"
+//        }
+//        
+//        networkService.makeRequestArrayData(request: arrayRequest,
+//                                            completion: completion)
+//    }
+    
 }
