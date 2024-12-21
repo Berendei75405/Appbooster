@@ -59,18 +59,20 @@ final class GistViewController: UIViewController {
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        self.navigationItem.setLeftBarButton(UIBarButtonItem(title: "Назад",
-                                                             style: .plain,
-                                                             target: self,
-                                                             action: #selector(popToBack)), animated: true)
-        self.title = "\(viewModel?.userName ?? "Пользовательские") Gist"
         setupUI()
         updateState()
     }
     
     //MARK: - setupUI
     private func setupUI() {
+        view.backgroundColor = .white
+        self.navigationItem.setLeftBarButton(UIBarButtonItem(title: "Назад",
+                                                             style: .plain,
+                                                             target: self,
+                                                             action: #selector(popToBack)), animated: true)
+        self.navigationItem.leftBarButtonItem?.tintColor = .black
+        self.title = "\(viewModel?.userName ?? "Пользовательские") Gist"
+        
         //table constraints
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
