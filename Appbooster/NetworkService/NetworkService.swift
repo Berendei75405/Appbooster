@@ -33,11 +33,11 @@ final class NetworkService {
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
                 case 300..<400:
-                    completion(.failure(.errorWithDescription("Запрошенный ресурс перемещен в другое место.")))
+                    return completion(.failure(.errorWithDescription("Запрошенный ресурс перемещен в другое место.")))
                 case 400..<500:
-                    completion(.failure(.errorWithDescription("Запрос содержит неверный синтаксис или не может быть выполнен.")))
+                    return completion(.failure(.errorWithDescription("Запрос содержит неверный синтаксис или не может быть выполнен.")))
                 case 500..<600:
-                    completion(.failure(.errorWithDescription("Сервер не смог выполнить запрос.")))
+                    return completion(.failure(.errorWithDescription("Сервер не смог выполнить запрос.")))
                 default:
                     break
                 }

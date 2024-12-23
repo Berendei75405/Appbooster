@@ -19,7 +19,7 @@ final class NetworkManager {
                    perPage: Int,
                    completion: @escaping (Result<[Gist], NetworkError>) -> Void) {
         //url с пагинацией
-        guard let url = URL(string: "https://api.github.com/users/Berendei75405/gists?page=\(pageNumber)&per_page=\(perPage)") else { return completion(.failure(.errorWithDescription("Такого пользователя нет!"))) }
+        guard let url = URL(string: "https://api.github.com/users/\(userName)/gists?page=\(pageNumber)&per_page=\(perPage)") else { return completion(.failure(.errorWithDescription("Такого пользователя нет!"))) }
         
         var request = URLRequest(url: url,
                                  cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60.0)

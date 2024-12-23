@@ -35,15 +35,27 @@ final class StartViewController: UIViewController {
                     self.viewModel?.coordinator.showGistVC(
                         user: viewModel?.gistInfo ?? [], userName: viewModel?.userName ?? "Пользователь")
                 case .failure(let error):
-                    activityView.isHidden = true
-                    UIView.animate(withDuration: 0.8,
-                                   delay: 0,
-                                   options: .curveEaseInOut,
-                                   animations: {
-                        self.centerYConstraint.constant = 0
-                        self.view.layoutIfNeeded()
-                    })
-
+                    if viewModel?.error == nil {
+                        viewModel?.error = error
+                        activityView.isHidden = true
+                        UIView.animate(withDuration: 0.8,
+                                       delay: 0,
+                                       options: .curveEaseInOut,
+                                       animations: {
+                            self.centerYConstraint.constant = 0
+                            self.view.layoutIfNeeded()
+                        })
+                    } else {
+                        viewModel?.error = nil
+                        activityView.isHidden = true
+                        UIView.animate(withDuration: 0.8,
+                                       delay: 0,
+                                       options: .curveEaseInOut,
+                                       animations: {
+                            self.centerYConstraint.constant = self.view.frame.height * 2
+                            self.view.layoutIfNeeded()
+                        })
+                    }
                     switch error {
                     case .errorWithDescription(let string):
                         errorView.configurate(textError: string)
@@ -217,7 +229,7 @@ extension StartViewController: ErrorViewDelegate {
     //обновление экрана при закрытии errorView
     func update() {
         activityView.isHidden = false
-        self.viewModel?.fetchGist()
+        stateRequset = .failure(viewModel?.error ?? NetworkError.errorWithDescription(""))
     }
 }
 

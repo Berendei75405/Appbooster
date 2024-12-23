@@ -13,6 +13,7 @@ protocol StartViewModelProtocol: AnyObject {
     var coordinator: CoordinatorProtocol! {get set}
     var gistInfo: [GistInfo] {get set}
     var userName: String {get set}
+    var error: NetworkError? {get set}
     func fetchGist()
 }
 
@@ -25,6 +26,7 @@ final class StartViewModel: StartViewModelProtocol {
     var gist: [Gist] = []
     var gistInfo: [GistInfo] = []
     var userName: String = ""
+    var error: NetworkError?
     
     //MARK: - fetchGist
     func fetchGist() {
