@@ -25,19 +25,18 @@ final class NetworkManager {
                                  cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60.0)
         request.httpMethod = "GET"
         
-        networkService.makeRequest(request: request, completion: completion)
+        networkService.makeRequestArray(request: request, completion: completion)
     }
     
-    //MARK: - fetch
-//    func fetchTextGist(url: [URL], completion: @escaping (Result<[String], Error>) -> Void) {
-//        var arrayRequest: [URLRequest] = []
-//        for item in url {
-//            var requset = URLRequest(url: item)
-//            requset.httpMethod = "GET"
-//        }
-//        
-//        networkService.makeRequestArrayData(request: arrayRequest,
-//                                            completion: completion)
-//    }
+    //MARK: - fetchGistText
+    func fetchGistText(url: URL,
+                       completion: @escaping (Result<Data, NetworkError>) -> Void) {
+        var request = URLRequest(url: url,
+                                 cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60.0)
+        request.httpMethod = "GET"
+        
+        networkService.makeRequest(request: request,
+                                   completion: completion)
+    }
     
 }

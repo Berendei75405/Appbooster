@@ -149,5 +149,10 @@ extension GistViewController: UITableViewDelegate, UITableViewDataSource {
             viewModel?.fetchGist()
         }
     }
+    
+    //выбор gist
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel?.showGistDetail(index: indexPath.row)
+    }
 }
 

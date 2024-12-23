@@ -13,6 +13,7 @@ protocol CoordinatorProtocol: AnyObject {
     func initialStartVC()
     func showGistVC(user: [GistInfo], userName: String)
     func popToBack()
+    func showGistDetail(gist: GistInfo)
 }
 
 final class Coordinator: CoordinatorProtocol {
@@ -55,7 +56,7 @@ final class Coordinator: CoordinatorProtocol {
     }
     
     //MARK: - createGistVC
-    func createGistVC() -> UIViewController {
+    private func createGistVC() -> UIViewController {
         let view = GistViewController()
         let viewModel = GistViewModel()
         
@@ -69,6 +70,28 @@ final class Coordinator: CoordinatorProtocol {
     func popToBack() {
         if let navCon = navController {
             navCon.popViewController(animated: true)
+        }
+    }
+    
+    //MARK: - createGistDetail
+    private func createGistDetail() -> UIViewController {
+        let view = GistDetailViewController()
+        let viewModel = GistDetailViewModel()
+        
+        view.viewModel = viewModel
+        viewModel.coordinator = self
+        
+        return view
+    }
+    
+    //MARK: - showGistDetail
+    func showGistDetail(gist: GistInfo) {
+        if let navController = navController {
+            guard let view = createGistDetail() as? GistDetailViewController else { return }
+            view.viewModel?.gistInfo = gist
+            
+            navController.pushViewController(view,
+                                             animated: true)
         }
     }
     
