@@ -10,18 +10,18 @@
 * Обработка ошибок и отборажение загрузки как в пользовательском приложении приветствуются. Для реализации можно использовать все, что душе угодно.
 * Обработка ошибок
   
-  <img width="322" alt="Снимок экрана 2024-12-23 в 21 32 09" src="https://github.com/user-attachments/assets/162330c6-8ffe-4e2a-838c-20fdcae12838" />
+<img width="322" alt="Снимок экрана 2024-12-23 в 21 32 09" src="https://github.com/user-attachments/assets/162330c6-8ffe-4e2a-838c-20fdcae12838" />
 
 
 * Ввод имени пользователя Gist
   
-  <img width="322" alt="Снимок экрана 2024-12-23 в 21 54 14" src="https://github.com/user-attachments/assets/765c0108-c3ac-4a77-8565-a5511f421677" />
+<img width="322" alt="Снимок экрана 2024-12-23 в 21 54 14" src="https://github.com/user-attachments/assets/765c0108-c3ac-4a77-8565-a5511f421677" />
 
 
 * Просмотр Gist пользователя с использованием пагинации и кешированием данных, так же у ячеек таблицы гибкая высота
   
- <img width="322" alt="Снимок экрана 2024-12-23 в 21 54 18" src="https://github.com/user-attachments/assets/1120f1ab-6041-43e5-b46d-f41946709622" />
+<img width="322" alt="Снимок экрана 2024-12-23 в 21 54 18" src="https://github.com/user-attachments/assets/1120f1ab-6041-43e5-b46d-f41946709622" />
 
 * Экран для более подробного просмотра Gist
   
- <img width="322" alt="Снимок экрана 2024-12-23 в 21 55 57" src="https://github.com/user-attachments/assets/4d11b5ac-9caf-4dce-9828-a24fe86e2afc" />
+<img width="322" alt="Снимок экрана 2024-12-23 в 21 55 57" src="https://github.com/user-attachments/assets/4d11b5ac-9caf-4dce-9828-a24fe86e2afc" />
