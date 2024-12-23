@@ -15,6 +15,7 @@ protocol GistViewModelProtocol: AnyObject {
     var updateTableState: PassthroughSubject<TableState, Never> {get set}
     func fetchGist()
     func popToRoot()
+    func showGistDetail(index: Int)
 }
 
 final class GistViewModel: GistViewModelProtocol {
@@ -66,6 +67,11 @@ final class GistViewModel: GistViewModelProtocol {
     //MARK: - popToRoot
     func popToRoot() {
         coordinator.popToBack()
+    }
+    
+    //MARK: - showGistDetail
+    func showGistDetail(index: Int) {
+        coordinator.showGistDetail(gist: gistInfo[index])
     }
     
 }

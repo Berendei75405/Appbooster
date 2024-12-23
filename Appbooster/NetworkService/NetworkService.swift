@@ -13,8 +13,8 @@ final class NetworkService {
     
     private init() {}
     
-    //MARK: - makeRequest
-    func makeRequest<T: Decodable>(request: URLRequest, completion: @escaping (Result<[T], NetworkError>) -> Void) {
+    //MARK: - makeRequestArray
+    func makeRequestArray<T: Decodable>(request: URLRequest, completion: @escaping (Result<[T], NetworkError>) -> Void) {
         
         //если есть кеш на запрос, то вернуть его, если нет то отправить запрос и записать кеш
         if let cashedResponse = URLCache.shared.cachedResponse(for: request) {
@@ -58,15 +58,62 @@ final class NetworkService {
                     
                     //кеширование ответа
                     if response != nil {
-                        print("save!")
                         let cashedResponse = CachedURLResponse(response: response!, data: data)
                         URLCache.shared.storeCachedResponse(cashedResponse, for: request)
                     }
                     
-                    
                     completion(.success(decodedData))
                 } catch {
                     completion(.failure(.errorWithDescription("\(error)")))
+                }
+            }
+        }
+        
+        //отправляем запрос
+        task.resume()
+        
+    }
+    
+    //MARK: - makeRequest
+    func makeRequest(request: URLRequest, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+        
+        //если есть кеш на запрос, то вернуть его, если нет то отправить запрос и записать кеш
+        if let cashedResponse = URLCache.shared.cachedResponse(for: request) {
+            completion(.success(cashedResponse.data))
+            return
+        }
+            
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            //обработанная ошибка
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 300..<400:
+                    completion(.failure(.errorWithDescription("Запрошенный ресурс перемещен в другое место.")))
+                case 400..<500:
+                    completion(.failure(.errorWithDescription("Запрос содержит неверный синтаксис или не может быть выполнен.")))
+                case 500..<600:
+                    completion(.failure(.errorWithDescription("Сервер не смог выполнить запрос.")))
+                default:
+                    break
+                }
+            }
+            
+            //необработанная ошибка
+            if let error = error {
+                completion(.failure(.errorWithDescription("Возникла непредвиденная ошибка или отсутствует соединение с интернетом")))
+                print(error)
+            }
+            
+            //обработка успешного ответа
+            if let data = data {
+                do {
+                    //кеширование ответа
+                    if response != nil {
+                        let cashedResponse = CachedURLResponse(response: response!, data: data)
+                        URLCache.shared.storeCachedResponse(cashedResponse, for: request)
+                    }
+                    completion(.success(data))
                 }
             }
         }
